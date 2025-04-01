@@ -1,0 +1,14 @@
+<h2>Confirmation de votre réservation</h2>
+
+<p>Bonjour <%= @booking.owner %>,</p>
+
+<p>Votre réservation a bien été confirmée 🎉</p>
+
+<ul>
+  <li>Voiture : <%= @booking.car %></li>
+  <li>Lieu : <%= @booking.location %></li>
+  <li>Dates : <%= @booking.starts_on %> → <%= @booking.ends_on %></li>
+  <li>Prix payé : <%= number_to_currency(@booking.price, :unit=>'€') %></li>
+</ul>
+
+<p>Merci pour votre confiance 🙏</p>

@@ -1,0 +1,60 @@
+<h2 style="text-align: center; color: #4CAF50; font-size: 2rem; margin-bottom: 30px;">Finaliser votre réservation</h2>
+
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+  <div style="margin-bottom: 20px;">
+    <p><strong>Voiture :</strong> <%= @booking.car %></p>
+    <p><strong>Lieu :</strong> <%= @booking.location %></p>
+    <p><strong>Dates :</strong> <%= @booking.starts_on %> → <%= @booking.ends_on %></p>
+    <p><strong>Prix de base :</strong> <%= number_to_currency(@booking.price, :unit=>'€') %></p>
+  </div>
+
+  <!-- Formulaire de finalisation -->
+  <form id="booking-form">
+    <div style="margin-bottom: 15px;">
+      <label for="delivery" style="font-size: 1rem; color: #333;">Lieu de livraison :</label><br>
+      <select id="delivery" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 1rem;">
+        <option value="">-- Choisissez --</option>
+        <% Booking::DELIVERY_OPTIONS.each do |label, value| %>
+          <option value="<%= value %>"><%= label %> (+<%= number_to_currency(value, :unit=>'€') %>)</option>
+        <% end %>
+      </select>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <label for="insurance" style="font-size: 1rem; color: #333;">Assurance :</label><br>
+      <select id="insurance" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 1rem;">
+        <option value="">-- Choisissez --</option>
+        <% Booking::INSURANCE_OPTIONS.each do |label, value| %>
+          <option value="<%= value %>"><%= label %> (+<%= number_to_currency(value, :unit=>'€') %>)</option>
+        <% end %>
+      </select>
+    </div>
+
+    <div style="font-size: 1.25rem; color: #333; margin-bottom: 20px;">
+      <strong>Prix total :</strong> <span id="total"><%= number_to_currency(@booking.price, :unit=>'€') %></span>
+    </div>
+
+    <div style="text-align: center;">
+      <button type="submit" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1rem;">
+        Valider
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const delivery = document.getElementById("delivery");
+  const insurance = document.getElementById("insurance");
+  const total = document.getElementById("total");
+  const basePrice = <%= @booking.price %>;
+
+  function updateTotal() {
+    const d = parseFloat(delivery.value || 0);
+    const i = parseFloat(insurance.value || 0);
+    const t = basePrice + d + i;
+    total.textContent = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(t);
+  }
+
+  delivery.addEventListener("change", updateTotal);
+  insurance.addEventListener("change", updateTotal);
+</script>

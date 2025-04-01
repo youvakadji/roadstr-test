@@ -1,0 +1,16 @@
+<h2>Rappel de votre réservation</h2>
+
+<p>Bonjour <%= @booking.owner %>,</p>
+
+<p>Voici le récapitulatif de votre réservation :</p>
+
+<ul>
+  <li>Voiture : <%= @booking.car %></li>
+  <li>Lieu : <%= @booking.location %></li>
+  <li>Dates : <%= @booking.starts_on %> → <%= @booking.ends_on %></li>
+  <li>Prix : <%= number_to_currency(@booking.price, :unit=>'€') %></li>
+</ul>
+
+<p>
+  <%= link_to "👉 Finaliser ma réservation", booking_options_url(@booking.id) %>
+</p>
